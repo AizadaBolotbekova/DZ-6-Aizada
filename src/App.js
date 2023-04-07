@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { useGetPokemonByNameQuery } from "./redux/services/pokemonApi";
 
-function App() {
+const App = () => {
+  const { data, error, isLoading } = useGetPokemonByNameQuery("bulbasaur");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="card">
+      {error ? (
+        <>Oh no, there was an error</>
+      ) : isLoading ? (
+        <>Loading...</>
+      ) : data ? (
+        <>
+          <img
+            src={data.sprites.other.dream_world.front_default}
+            alt={data.species.name}
+          />
+          <h3>{data.species.name}</h3>
+        </>
+      ) : null}
     </div>
   );
-}
+};
 
 export default App;
